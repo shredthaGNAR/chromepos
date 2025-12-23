@@ -9,26 +9,39 @@
 // @license        This Source Code Form is subject to the terms of the Creative Commons Attribution-NonCommercial-ShareAlike International License, v. 4.0. If a copy of the CC BY-NC-SA 4.0 was not distributed with this file, You can obtain one at http://creativecommons.org/licenses/by-nc-sa/4.0/ or send a letter to Creative Commons, PO Box 1866, Mountain View, CA 94042, USA.
 // ==/UserScript==
 
-(function () {
+(function() {
   class FluentRevealEffect {
     // user configuration
     static options = {
       // if true, show the effect on bookmarks on the toolbar
       includeBookmarks: true,
 
-      // the color of the gradient. default is sort of a faint baby blue. you may prefer just white, e.g. hsla(0, 0%, 100%, 0.05)
-      lightColor: "hsla(224, 100%, 80%, 0.55)",
+      // if true, show the effect on the urlbar
+      includeUrlBar: true,
+
+      // the color of the gradient. default is the browser's color on navbar button hover, or a faint baby blue if it's not available. 
+      // you may prefer just white, e.g. hsla(0, 0%, 100%, 0.05)
+      lightColor: "var(--button-hover-bgcolor, hsla(224, 100%, 80%, 0.55))",
 
       // how wide the radial gradient is.
-      gradientSize: 60,
+      gradientSize: 50,
 
       // whether to show an additional light burst when clicking an element. (not recommended)
       clickEffect: false,
+
+      // don't process mouse movements greater than {gradientSize}px from top of the screen, in order to reduce system load.
+      // disable if you modified the ui to have toolbar buttons on different side of the screen (left, right or bottom)
+      filterDy: false,
+
+      // looks for all toolbar buttons only once on script startup — reduces system load, but requires browser restart if toolbar buttons were changed
+      cacheButtons: false,
     };
 
     // instantiate the handler for a given window
     constructor() {
       this._options = FluentRevealEffect.options;
+      this._lastMouseX = 0;
+      this._lastMouseY = 0;
       this.applyEffect(window);
       document.documentElement.setAttribute("fluent-reveal-hover", true);
       if (this._options.clickEffect) {
@@ -38,22 +51,38 @@
 
     // get all the toolbar buttons in the navbar, in iterable form
     get toolbarButtons() {
-      let buttons = Array.from(
-        gNavToolbox.querySelectorAll(".toolbarbutton-1")
-      );
-      if (this._options.includeBookmarks) {
-        buttons = buttons.concat(
-          Array.from(this.placesToolbarItems.querySelectorAll(".bookmark-item"))
+      if (!this._toolbarButtons || !this._options.cacheButtons) {
+        this._toolbarButtons = Array.from(
+          gNavToolbox.querySelectorAll(".toolbarbutton-1")
         );
+        if (this._options.includeUrlBar) {
+          let urlbarBg = gNavToolbox.querySelector("#urlbar-background");
+          if (urlbarBg) this._toolbarButtons.push(urlbarBg);
+        }
+        if (this._options.includeBookmarks) {
+          this._toolbarButtons = this._toolbarButtons.concat(
+            Array.from(
+              this.personalToolbar.querySelectorAll(
+                ".toolbarbutton-1, .bookmark-item"
+              )
+            )
+          );
+        }
       }
-      return buttons;
+      return this._toolbarButtons;
     }
 
-    get placesToolbarItems() {
+    get personalToolbar() {
       return (
-        this._placesToolbarItems ||
-        (this._placesToolbarItems =
-          document.getElementById("PlacesToolbarItems"))
+        this._personalToolbar ||
+        (this._personalToolbar = document.getElementById("PersonalToolbar"))
+      );
+    }
+
+    get browser() {
+      return (
+        this._browser ||
+        (this._browser = document.getElementById("browser"))
       );
     }
 
@@ -62,6 +91,24 @@
      * @param {object} e (event)
      */
     handleEvent(e) {
+      // Store mouse position for later use
+      if (e.clientX !== undefined) this._lastMouseX = e.clientX;
+      if (e.clientY !== undefined) this._lastMouseY = e.clientY;
+      if (e.pageX !== undefined) this._lastPageX = e.pageX;
+      if (e.pageY !== undefined) this._lastPageY = e.pageY;
+
+      /// filter out mouse events which are too far from toolbar to cause any actual redraw
+      /// value is {gradientSize} + some additional padding to make sure effect fully clears out
+      if (
+        this._options.filterDy &&
+        e.clientY >
+          this.browser.getBoundingClientRect().y +
+            this._options.gradientSize
+      ) {
+        if (this._someEffectsApplied) this.clearEffectsForAll();
+        return;
+      }
+      
       requestAnimationFrame(time => {
         switch (e.type) {
           case "scroll":
@@ -81,6 +128,10 @@
           case "mouseup":
             this._options.is_pressed = false;
             this.generateEffectsForAll(e);
+            break;
+
+          case "mouseleave":
+            this.clearEffectsForAll();
             break;
         }
       });
@@ -131,6 +182,8 @@
      * @param {boolean} click (whether the left mouse button is down)
      */
     generateToolbarButtonEffect(el, e, click = false) {
+      if (!el) return;
+      
       let { gradientSize, lightColor } = this._options;
       let isBookmark =
         el.id === "PlacesChevron" || el.classList.contains("bookmark-item");
@@ -138,6 +191,21 @@
         ? el
         : el.querySelector(".toolbarbutton-badge-stack") ||
           el.querySelector(".toolbarbutton-icon");
+      if (el.id == "urlbar-background") area = el;
+
+      // don't apply effect to focused url bar
+      if (this._options.includeUrlBar && el.id == 'urlbar-background' && gURLBar && gURLBar.focused) {
+        return this.clearEffect(area);
+      }
+
+      if (!area) {
+        area = el.querySelector(".toolbarbutton-text");
+      }
+
+      if (!area) {
+        return;
+      }
+
       let areaStyle = getComputedStyle(area);
       if (
         areaStyle.display == "none" ||
@@ -146,18 +214,19 @@
       ) {
         if (isBookmark) return this.clearEffect(area);
         area = el.querySelector(".toolbarbutton-text");
+        if (!area) return;
       }
 
-      if (el.disabled || areaStyle.pointerEvents == "none") {
+      if (el.disabled || getComputedStyle(el).pointerEvents == "none") {
         return this.clearEffect(area);
       }
 
       let x =
-        (e.pageX || MousePosTracker._x) -
+        (e.pageX || this._lastPageX || 0) -
         this.getOffset(area).left -
         window.scrollX;
       let y =
-        (e.pageY || MousePosTracker._y) -
+        (e.pageY || this._lastPageY || 0) -
         this.getOffset(area).top -
         window.scrollY;
 
@@ -182,6 +251,7 @@
       this.toolbarButtons.forEach(button =>
         this.generateToolbarButtonEffect(button, e, click)
       );
+      this._someEffectsApplied = true;
     }
 
     /**
@@ -228,8 +298,27 @@
      * @param {object} el (a DOM node)
      */
     clearEffect(el) {
+      if (!el) return;
       this._options.is_pressed = false;
       el.style.removeProperty("background-image");
+    }
+
+    /**
+    * invoked once when {filterDy} option enabled, and cursor leaves the interactive area
+    */
+    clearEffectsForAll() {
+      this.toolbarButtons.forEach(button => {
+        let isBookmark =
+          button.id === "PlacesChevron" || button.classList.contains("bookmark-item");
+        let area = isBookmark
+          ? button
+          : button.querySelector(".toolbarbutton-badge-stack") ||
+            button.querySelector(".toolbarbutton-icon") ||
+            button.querySelector(".toolbarbutton-text");
+        if (button.id == "urlbar-background") area = button;
+        if (area) this.clearEffect(area);
+      });
+      this._someEffectsApplied = false;
     }
   }
 

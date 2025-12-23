@@ -1,5 +1,7 @@
 ////// ⚠️ REQUIRED PREFS
 
+// only required if you're using any of my scripts that use eval().
+user_pref("security.allow_unsafe_dangerous_privileged_evil_eval", true);
 //// disable telemetry since we're modding firefox
 user_pref("toolkit.telemetry.enabled", false);
 user_pref("browser.discovery.enabled", false);
@@ -37,8 +39,6 @@ user_pref("dom.forms.select.customstyling", false);
 user_pref("browser.tabs.tabmanager.enabled", true);
 // disable urlbar result group labels since we don't use them
 user_pref("browser.urlbar.groupLabels.enabled", false);
-// corresponds to the system color Highlight
-user_pref("ui.highlight", "hsl(250, 100%, 60%)");
 // Background for selected <option> elements and others
 user_pref("ui.selecteditem", "#2F3456");
 // Text color for selected <option> elements and others

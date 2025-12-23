@@ -63,6 +63,7 @@ menupopup {
   --panel-shortcut-focus: var(--uc-panel-shortcut-focus) !important;
   --panel-disabled-color: var(--uc-menu-disabled-color) !important;
   --panel-separator-color: var(--desaturate-dimmed) !important;
+  --panel-separator-padding-horizontal: 4px !important;
   --toolbarbutton-checked-background: var(--uc-toolbarbutton-checked-background) !important;
   --toolbarbutton-hover-background: var(--uc-toolbarbutton-hover-background) !important;
   --toolbarbutton-active-background: var(--uc-toolbarbutton-active-background) !important;
@@ -168,6 +169,7 @@ menupopup {
   --panel-banner-item-hover-bgcolor: hsla(109.9, 90.9%, 47.3%, 0.15);
   --panel-banner-item-active-bgcolor: hsla(109.9, 90.9%, 47.3%, 0.2);
   --panel-banner-item-info-icon-bgcolor: var(--arrowpanel-color) !important;
+  --box-shadow-popup: 0 0 6px 0 rgba(0, 0, 0, 0.1), 0 0 8px 2px rgba(0, 0, 0, 0.1) !important;
 
   --menuitem-margin: 0 var(--menupopup-inner-padding-magnitude) !important;
   --arrowpanel-menuitem-margin-inline: var(--uc-arrowpanel-menuitem-margin-inline, 4px) !important;

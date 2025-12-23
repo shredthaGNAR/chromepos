@@ -523,16 +523,25 @@ class PrivateTabManager {
     return newTab;
   }
 
-  togglePrivate(tab = gBrowser.selectedTab) {
-    tab.isToggling = true;
-    let shouldSelect = tab == gBrowser.selectedTab;
-    this.duplicateTab(tab, {
-      index: shouldSelect ? tab._tPos + 1 : tab._tPos,
-      inBackground: !shouldSelect,
+togglePrivate(tab = gBrowser.selectedTab) {
+    let isCurrentlyPrivate = this.isPrivate(tab);
+    let targetUserContextId = isCurrentlyPrivate ? 0 : this.container.userContextId;
+
+    let urlToOpen = tab.linkedBrowser.currentURI.spec;
+
+    let newTab = openTrustedLinkIn(urlToOpen, "tab", {
+        userContextId: targetUserContextId,
+        index: tab._tPos + 1,
+        inBackground: tab != gBrowser.selectedTab,
     });
-    if (shouldSelect && gURLBar.focused) gURLBar.focus();
+
+    if (tab == gBrowser.selectedTab) {
+        gBrowser.selectedTab = newTab;
+        if (gURLBar.focused) gURLBar.focus();
+    }
+
     gBrowser.removeTab(tab, { animate: false, closeWindowWithLastTab: false });
-  }
+}
 
   toggleMask() {
     let privateMask = document.querySelector(

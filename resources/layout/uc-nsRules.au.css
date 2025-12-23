@@ -402,6 +402,16 @@ from the style editor in the browser toolbox. */
         }
       }
     }
+
+    .toggle-container-with-text > & {
+      margin-inline-end: var(--context-checkbox-margin-end);
+    }
+  }
+}
+
+@-moz-document url-prefix("about:preferences") {
+  menulist[image]::part(icon) {
+    width: 16px !important;
   }
 }
 

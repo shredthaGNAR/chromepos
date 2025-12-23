@@ -13,17 +13,17 @@ titlebar, this sheet controls their appearance as well. */
   background-color: var(--lwt-accent-color) !important;
 }
 
-#toolbar-menubar[inactive="true"] ~ #TabsToolbar,
+#toolbar-menubar[inactive="true"]~#TabsToolbar,
 #toolbar-menubar:not([inactive="true"]) {
   padding-inline-end: 6px !important;
 }
 
 .titlebar-spacer[type="pre-tabs"] {
-  display: none;
+  display: none !important;
 }
 
 .titlebar-spacer[type="post-tabs"],
-#toolbar-menubar > spacer {
+#toolbar-menubar>spacer {
   width: var(--titlebar-spacer-width, 32px) !important;
   display: flex !important;
 }
@@ -33,19 +33,20 @@ titlebar, this sheet controls their appearance as well. */
 }
 
 #navigator-toolbox {
-	will-change: revert !important;
-	transition: none !important;
+  will-change: revert !important;
+  transition: none !important;
 }
 
 #toolbar-menubar:not([inactive="true"]) {
+
   /* split the width in half to center the menubar between the tabs and the titlebar buttons */
-  > spacer,
-  + #TabsToolbar .titlebar-spacer {
+  >spacer,
+  +#TabsToolbar .titlebar-spacer {
     width: calc(var(--titlebar-spacer-width, 32px) / 2) !important;
   }
 
-  + #TabsToolbar {
-    > .titlebar-buttonbox-container {
+  +#TabsToolbar {
+    >.titlebar-buttonbox-container {
       display: none !important;
     }
 
@@ -54,17 +55,13 @@ titlebar, this sheet controls their appearance as well. */
 }
 
 @media (-moz-platform: windows) {
-  :root:not([chromehidden~="menubar"]) #toolbar-menubar:not([inactive]) + #TabsToolbar .titlebar-spacer {
+  :root:not([chromehidden~="menubar"]) #toolbar-menubar:not([inactive])+#TabsToolbar .titlebar-spacer {
     display: none;
   }
 }
 
 #titlebar {
   flex-flow: row nowrap !important;
-}
-
-#tabbrowser-tabs {
-  background-color: var(--lwt-accent-color) !important;
 }
 
 /* menubar next to tabs (merge tabs bar with titlebar menubar and flow them horizontally) */
@@ -74,7 +71,7 @@ titlebar, this sheet controls their appearance as well. */
   right: 0;
   height: var(--tabstrip-min-height) !important;
 
-  &[autohide="true"][inactive="true"]:not([customizing="true"]) {
+  &[autohide=""][inactive="true"]:not([customizing="true"]) {
     max-width: 0 !important;
     min-width: 0 !important;
     width: 0 !important;
@@ -94,7 +91,7 @@ titlebar, this sheet controls their appearance as well. */
 #main-menubar {
   flex-grow: 1 !important;
 
-  > menu > menupopup {
+  >menu>menupopup {
     margin-block: calc(0px - var(--menupopup-inner-box-margin) - ((var(--tab-min-height) - 16px - 4px - 5px) / 2)) !important;
     margin-inline: calc(0px - var(--menupopup-inner-box-margin) + 2px) !important;
   }
@@ -102,27 +99,27 @@ titlebar, this sheet controls their appearance as well. */
 
 #toolbar-menubar {
   #main-menubar {
-    > menu {
+    >menu {
       appearance: none !important;
       background-color: transparent !important;
       padding-inline: 2px !important;
       margin-inline: 0 !important;
 
-      > label {
+      >label {
         margin: 0 !important;
         padding: 4px 8px 5px 8px !important;
         border-radius: var(--toolbarbutton-border-radius) !important;
       }
 
-      &[_moz-menuactive="true"] > label {
+      &[_moz-menuactive="true"]>label {
         background-color: var(--toolbarbutton-hover-background) !important;
       }
 
-      &[open] > label {
+      &[open]>label {
         background-color: var(--toolbarbutton-active-background) !important;
       }
-      
-      > .menu-accel {
+
+      >.menu-accel {
         display: none !important;
       }
     }
@@ -163,12 +160,12 @@ titlebar, this sheet controls their appearance as well. */
   display: none !important;
 }
 
-#tabbrowser-tabs[hasadjacentnewtabbutton]:not([overflow]) ~ #new-tab-button {
-	display: revert !important;
+#tabbrowser-tabs[hasadjacentnewtabbutton]:not([overflow])~#new-tab-button {
+  display: revert !important;
 }
 
 /* get rid of drop shadow drawn on leftmost visible tab */
-.tabbrowser-arrowscrollbox > .arrowscrollbox-overflow-start-indicator {
+.tabbrowser-arrowscrollbox>.arrowscrollbox-overflow-start-indicator {
   visibility: collapse !important;
 }
 
@@ -202,7 +199,7 @@ titlebar, this sheet controls their appearance as well. */
   }
 }
 
-:is(toolbarbutton, toolbaritem, toolbarpaletteitem) + #tabbrowser-tabs {
+:is(toolbarbutton, toolbaritem, toolbarpaletteitem)+#tabbrowser-tabs {
   margin-inline-start: 2px !important;
 }
 
@@ -218,8 +215,9 @@ overflowing tabs don't draw shadows on the special new tab button */
 }
 
 :root:not([sizemode="normal"]) {
+
   .arrowscrollbox-overflow-end-indicator,
-  .tabbrowser-arrowscrollbox > .arrowscrollbox-overflow-start-indicator {
+  .tabbrowser-arrowscrollbox>.arrowscrollbox-overflow-start-indicator {
     visibility: collapse !important;
   }
 }
@@ -228,7 +226,7 @@ overflowing tabs don't draw shadows on the special new tab button */
   display: none !important;
 }
 
-#TabsToolbar .toolbarbutton-1 > :is(.toolbarbutton-icon, .toolbarbutton-text, .toolbarbutton-badge-stack) {
+#TabsToolbar .toolbarbutton-1> :is(.toolbarbutton-icon, .toolbarbutton-text, .toolbarbutton-badge-stack) {
   border-radius: var(--toolbarbutton-border-radius) !important;
 }
 
@@ -241,8 +239,8 @@ overflowing tabs don't draw shadows on the special new tab button */
   stroke: none !important;
   fill: none !important;
   content: none !important;
-  
-  > .toolbarbutton-icon {
+
+  >.toolbarbutton-icon {
     display: revert !important;
   }
 }
@@ -252,14 +250,14 @@ overflowing tabs don't draw shadows on the special new tab button */
   display: none !important;
 }
 
-:root:-moz-window-inactive:not([customizing]) .titlebar-buttonbox > toolbarbutton:not(:hover) {
+:root:-moz-window-inactive:not([customizing]) .titlebar-buttonbox>toolbarbutton:not(:hover) {
   list-style-image: url(chrome://userchrome/content/window/inactive.svg) !important;
 }
 
 .titlebar-buttonbox {
   appearance: none !important;
 
-  .titlebar-button > .toolbarbutton-icon {
+  .titlebar-button>.toolbarbutton-icon {
     appearance: none !important;
     width: 15.3px !important;
     height: 15.3px !important;
@@ -282,6 +280,7 @@ overflowing tabs don't draw shadows on the special new tab button */
   list-style-image: url(chrome://userchrome/content/window/maximize.svg) !important;
 
   &.titlebar-max {
+
     &:hover,
     &:focus-visible {
       list-style-image: url(chrome://userchrome/content/window/maximize-hover.svg) !important;
@@ -293,6 +292,7 @@ overflowing tabs don't draw shadows on the special new tab button */
   }
 
   &.titlebar-restore {
+
     &:hover,
     &:focus-visible {
       list-style-image: url(chrome://userchrome/content/window/maximize-restore.svg) !important;
@@ -356,7 +356,7 @@ overflowing tabs don't draw shadows on the special new tab button */
   background: none !important;
   appearance: none !important;
 
-  > image {
+  >image {
     content: "";
     box-sizing: border-box !important;
     width: calc(2 * var(--toolbarbutton-inner-padding) + 16px) !important;
@@ -369,7 +369,7 @@ overflowing tabs don't draw shadows on the special new tab button */
     border-radius: var(--toolbarbutton-border-radius) !important;
   }
 
-  > label {
+  >label {
     display: none !important;
   }
 }
@@ -380,13 +380,13 @@ overflowing tabs don't draw shadows on the special new tab button */
 }
 
 .accessibility-indicator {
-  > .button-box {
+  >.button-box {
     width: calc(2 * var(--toolbarbutton-inner-padding) + 16px) !important;
     height: calc(2 * var(--toolbarbutton-inner-padding) + 16px) !important;
     padding: var(--toolbarbutton-inner-padding) !important;
     border-radius: var(--toolbarbutton-border-radius) !important;
 
-    > .button-icon {
+    >.button-icon {
       width: 16px !important;
       height: 16px !important;
       list-style-image: url(chrome://userchrome/content/devtools/tool-accessibility.svg) !important;
@@ -394,27 +394,27 @@ overflowing tabs don't draw shadows on the special new tab button */
   }
 }
 
-.accessibility-indicator:is(:hover, :focus-visible) > .button-box,
-toolbarbutton.private-browsing-indicator-with-label:is(:hover, :focus-visible) > image {
+.accessibility-indicator:is(:hover, :focus-visible)>.button-box,
+toolbarbutton.private-browsing-indicator-with-label:is(:hover, :focus-visible)>image {
   background-color: var(--arrowpanel-dimmed) !important;
 }
 
-.accessibility-indicator:is(:hover:active, [open]) > .button-box,
-toolbarbutton.private-browsing-indicator-with-label:is(:hover:active, [open]) > image {
+.accessibility-indicator:is(:hover:active, [open])>.button-box,
+toolbarbutton.private-browsing-indicator-with-label:is(:hover:active, [open])>image {
   background-color: var(--arrowpanel-dimmed-further) !important;
 }
 
-:root:not([privatebrowsingmode="temporary"]) :is(#firefox-view-button, #wrapper-firefox-view-button) + #tabbrowser-tabs {
+:root:not([privatebrowsingmode="temporary"]) :is(#firefox-view-button, #wrapper-firefox-view-button)+#tabbrowser-tabs {
   border-inline-start: revert !important;
   padding-inline-start: revert !important;
 }
 
-#TabsToolbar-customization-target > :is(toolbarbutton, toolbaritem, toolbarpaletteitem):first-child {
+#TabsToolbar-customization-target> :is(toolbarbutton, toolbaritem, toolbarpaletteitem):first-child {
   margin-inline-start: 2px !important;
 }
 
 /* all tabs button popup */
-.panel-subview-body > .all-tabs-item {
+.panel-subview-body>.all-tabs-item {
   border-radius: var(--arrowpanel-menuitem-border-radius) !important;
   box-shadow: none !important;
   margin-inline: 4px !important;
@@ -424,7 +424,7 @@ toolbarbutton.private-browsing-indicator-with-label:is(:hover:active, [open]) > 
 }
 
 #allTabsMenu-allTabsViewTabs,
-#allTabsMenu-hiddenTabsView > .panel-subview-body {
+#allTabsMenu-hiddenTabsView>.panel-subview-body {
   margin: var(--panel-subview-body-padding) !important;
   margin-top: 0 !important;
   padding-block: 0 !important;
@@ -457,7 +457,7 @@ toolbarbutton.private-browsing-indicator-with-label:is(:hover:active, [open]) > 
     --main-stripe-color: var(--arrowpanel-dimmed-even-further);
   }
 
-  &:not([multiselected]) > .all-tabs-container-indicator {
+  &:not([multiselected])>.all-tabs-container-indicator {
     --main-stripe-color: var(--identity-tab-color);
   }
 
@@ -484,7 +484,7 @@ toolbarbutton.private-browsing-indicator-with-label:is(:hover:active, [open]) > 
       background-color: var(--arrowpanel-faint, color-mix(in srgb, var(--arrowpanel-dimmed) 60%, transparent)) !important;
     }
 
-    > .all-tabs-button {
+    >.all-tabs-button {
       opacity: 0.6;
     }
   }
@@ -566,7 +566,7 @@ toolbarbutton.private-browsing-indicator-with-label:is(:hover:active, [open]) > 
       list-style-image: url(chrome://userchrome/content/textbox-clear.svg) !important;
     }
 
-    > .toolbarbutton-icon {
+    >.toolbarbutton-icon {
       min-width: 18px !important;
       min-height: 18px !important;
       fill: inherit !important;
@@ -575,7 +575,7 @@ toolbarbutton.private-browsing-indicator-with-label:is(:hover:active, [open]) > 
       margin: 0 !important;
     }
 
-    > label:empty {
+    >label:empty {
       display: none !important;
     }
   }
@@ -612,8 +612,9 @@ toolbarbutton.private-browsing-indicator-with-label:is(:hover:active, [open]) > 
 
 :root[italic-unread-tabs] {
   .all-tabs-item[notselectedsinceload] {
-    &:not([pending]) > .all-tabs-button,
-    &[pending] > .all-tabs-button[busy] {
+
+    &:not([pending])>.all-tabs-button,
+    &[pending]>.all-tabs-button[busy] {
       font-style: italic !important;
     }
   }
@@ -672,7 +673,7 @@ toolbarbutton.private-browsing-indicator-with-label:is(:hover:active, [open]) > 
   }
 }
 
-.all-tabs-item[pinned] > .all-tabs-button.subviewbutton > .toolbarbutton-text {
+.all-tabs-item[pinned]>.all-tabs-button.subviewbutton>.toolbarbutton-text {
   background: url(chrome://userchrome/content/material/pin-45.svg) no-repeat 5px/12px !important;
 }
 
@@ -687,7 +688,7 @@ toolbarbutton.private-browsing-indicator-with-label:is(:hover:active, [open]) > 
 .subviewbutton[command="Browser:OpenAboutContainers"]:not(.subviewbutton-iconic, [image]) {
   list-style-image: url(chrome://userchrome/content/settings.svg) !important;
 
-  > .toolbarbutton-text {
+  >.toolbarbutton-text {
     padding-inline-start: var(--arrowpanel-subviewbutton-iconic-gap, 8px) !important;
   }
 }
@@ -695,69 +696,68 @@ toolbarbutton.private-browsing-indicator-with-label:is(:hover:active, [open]) > 
 /* move titlebar buttons to the left on macOS and linux
 or if the user sets a pref */
 /* stylelint-disable-next-line media-query-no-invalid */
-@media (-moz-platform: macos), (-moz-platform: linux), -moz-pref("userChrome.css.titlebar-buttons-on-left") {
-  .titlebar-buttonbox-container,
-  #toolbar-menubar > .titlebar-buttonbox-container {
-    order: 0 !important;
-  }
 
-  #toolbar-menubar > spacer,
-  .titlebar-spacer[type="pre-tabs"] {
-    order: 1 !important;
-  }
+.titlebar-buttonbox-container,
+#toolbar-menubar>.titlebar-buttonbox-container {
+  order: 0 !important;
+}
 
-  #toolbar-menubar > *,
-  .toolbar-items {
-    order: 2 !important;
-  }
+#toolbar-menubar>spacer,
+.titlebar-spacer[type="pre-tabs"] {
+  order: 1 !important;
+}
 
-  #toolbar-menubar {
-    order: 0 !important;
-  }
+#toolbar-menubar>*,
+.toolbar-items {
+  order: 2 !important;
+}
 
-  .titlebar-min {
-    order: 2 !important;
-  }
+#toolbar-menubar {
+  order: 0 !important;
+}
 
-  .titlebar-max,
-  .titlebar-restore {
-    order: 3 !important;
-  }
+.titlebar-min {
+  order: 2 !important;
+}
 
-  .titlebar-close {
-    order: 1 !important;
-  }
+.titlebar-max,
+.titlebar-restore {
+  order: 3 !important;
+}
 
-  #TabsToolbar,
-  #toolbar-menubar[inactive="true"] ~ #TabsToolbar {
-    padding-inline: 4px 3px !important;
-  }
+.titlebar-close {
+  order: 1 !important;
+}
 
-  #toolbar-menubar:not([inactive="true"]) {
-    padding-inline: 4px !important;
-  }
+#TabsToolbar,
+#toolbar-menubar[inactive="true"]~#TabsToolbar {
+  padding-inline: 4px 3px !important;
+}
 
-  #toolbar-menubar > spacer,
-  .titlebar-spacer[type="pre-tabs"] {
+#toolbar-menubar:not([inactive="true"]) {
+  padding-inline: 4px !important;
+}
+
+#toolbar-menubar>spacer,
+.titlebar-spacer[type="pre-tabs"] {
+  width: 8px !important;
+  display: flex !important;
+}
+
+.titlebar-spacer[type="post-tabs"] {
+  display: none !important;
+}
+
+#toolbar-menubar:not([inactive="true"]) {
+  >spacer {
     width: 8px !important;
-    display: flex !important;
   }
 
-  .titlebar-spacer[type="post-tabs"] {
+  +#TabsToolbar .titlebar-spacer[type="pre-tabs"] {
     display: none !important;
   }
+}
 
-  #toolbar-menubar:not([inactive="true"]) {
-    > spacer {
-      width: 8px !important;
-    }
-
-    + #TabsToolbar .titlebar-spacer[type="pre-tabs"] {
-      display: none !important;
-    }
-  }
-
-  :root {
-    --titlebar-background: var(--lwt-accent-color) var(--titlebar-gradient-left);
-  }
+:root {
+  --titlebar-background: var(--lwt-accent-color) var(--titlebar-gradient-left);
 }

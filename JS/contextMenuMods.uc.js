@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name           Context Menu Mods
-// @version        1.1.1
+// @version        1.1.2
 // @author         aminomancer
 // @homepageURL    https://github.com/aminomancer/uc.css.js
 // @description    Add some new items to the main content area context menu.
@@ -91,7 +91,7 @@
           apply: (target, thisArg, args) => {
             let [type, callback] = args;
             if (type === "popupshowing" && callback instanceof Function) {
-              args[1] = event => {
+              args[1] = (event) => {
                 this.maybeInit();
                 Reflect.apply(callback, thisArg, [event]);
               };
@@ -110,7 +110,7 @@
         await Services.search.promiseInitialized;
         let engineObjects = await Services.search.getVisibleEngines();
         await Promise.all(
-          engineObjects.map(async engine => {
+          engineObjects.map(async (engine) => {
             if (engine.hideOneOffButton) return null;
             return this.engines.push({
               id: engine.id,
@@ -182,18 +182,18 @@
       let newMenuPrivate = this.contextMenu.querySelector(
         "#context-searchselect-private"
       );
-      newMenu.addEventListener("command", e => {
+      newMenu.addEventListener("command", (e) => {
         let { searchTerms, usePrivate, principal, csp } = newMenu;
         this.search(searchTerms, usePrivate, principal, csp, e);
       });
-      newMenu.addEventListener("popupshowing", e =>
+      newMenu.addEventListener("popupshowing", (e) =>
         gContextMenu.createSearchMenu(e)
       );
-      newMenuPrivate.addEventListener("command", e => {
+      newMenuPrivate.addEventListener("command", (e) => {
         let { searchTerms, principal, csp } = newMenuPrivate;
         this.search(searchTerms, true, principal, csp, e);
       });
-      newMenuPrivate.addEventListener("popupshowing", e =>
+      newMenuPrivate.addEventListener("popupshowing", (e) =>
         gContextMenu.createSearchMenu(e)
       );
     }
@@ -224,10 +224,7 @@
             item.setAttribute("engine-id", engine.id);
             item.setAttribute("label", engine.name);
             if (engine.iconURL) {
-              item.style.setProperty(
-                "--engine-icon",
-                `url('${engine.iconURL}')`
-              );
+              item.image = engine.iconURL;
             }
             fragment.appendChild(item);
           }
