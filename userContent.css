@@ -16,8 +16,8 @@
 @import url(resources/in-content/ext-sortbookmarks.css);
 @import url(resources/in-content/ext-privatebookmarks.css);
 /*@import url(components/onetab-darknew.css);
-*/
-@import url(components/circular_homepage_shortcuts.css);
+*
+@import url(components/circular_homepage_shortcuts.css);*/
 @import url(components/mozilla.css);
 @import url(addons.css);
 @import url(components/addons.css);
@@ -25,7 +25,7 @@
 
 /*  https://github.com/Godiesc/opera-gx
 @import url(components/one_root-personal.css);
-@import url(components/one_UC-newtabpage.css);*/
+@import url(components/one_UC-newtabpage.css);
 @import url(components/one_UC-settings-addons-pages.css);
 @import url(components/one_UC-addons-store.css);
 
