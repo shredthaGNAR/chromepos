@@ -1,4 +1,4 @@
-/****************************************************************************************
+zzzZzzzzZZ/****************************************************************************************
  * OPTION: NATURAL SMOOTH SCROLLING V3 [MODIFIED]                                      *
  ****************************************************************************************/
 // credit: https://github.com/AveYo/fox/blob/cf56d1194f4e5958169f9cf335cd175daa48d349/Natural%20Smooth%20Scrolling%20for%20user.js
@@ -67,10 +67,10 @@ user_pref("dom.security.sanitizer.enabled", true);
 // [1] https://www.reddit.com/r/firefox/comments/r69j52/firefox_content_process_limit_is_gone/
 // [2] https://firefox-source-docs.mozilla.org/dom/ipc/process_model.html#web-content-processes
 user_pref("dom.ipc.processCount", 8); // DEFAULT; Shared Web Content
-user_pref("dom.ipc.processCount.webIsolated", 1); // default=4; Isolated Web Content
+user_pref("dom.ipc.processCount.webIsolated", 4); // default=4; Isolated Web Content
 
 // PREF: use one process for process preallocation cache
-user_pref("dom.ipc.processPrelaunch.fission.number", 1); // default=3; Process Preallocation Cache
+user_pref("dom.ipc.processPrelaunch.fission.number", 3); // default=3; Process Preallocation Cache
 
 // PREF: configure process isolation
 // [1] https://hg.mozilla.org/mozilla-central/file/tip/dom/ipc/ProcessIsolation.cpp#l53
@@ -456,17 +456,6 @@ user_pref("layout.css.font-visibility.private", 3);
 user_pref("layout.css.font-visibility.resistFingerprinting", 3);
 ////
 
-//// windows font settings - does nothing on macOS or linux
-user_pref("gfx.font_rendering.cleartype_params.cleartype_level", 100);
-user_pref(
-  "gfx.font_rendering.cleartype_params.force_gdi_classic_for_families",
-  ""
-);
-user_pref("gfx.font_rendering.cleartype_params.force_gdi_classic_max_size", 6);
-user_pref("gfx.font_rendering.cleartype_params.pixel_structure", 1);
-user_pref("gfx.font_rendering.cleartype_params.rendering_mode", 5);
-user_pref("gfx.font_rendering.directwrite.use_gdi_table_loading", false);
-////
 
 //// recommended userChrome... prefs created by the theme or scripts. there are
 //// many more not included here, to allow a lot more customization. these are
@@ -480,7 +469,7 @@ user_pref("userChrome.css.menupopup-shadows", true);
 //// display the all tabs menu in reverse order (newer tabs on top, like history)
 user_pref("userChrome.tabs.all-tabs-menu.reverse-order", true);
 // turn bookmarks on the toolbar into small square buttons with no text labels
-user_pref("userChrome.bookmarks-toolbar.icons-only", false);
+user_pref("userChrome.bookmarks-toolbar.icons-only", true);
 // replace UI font with SF Pro, the system font for macOS.
 // recommended for all operating systems, but not required.
 // must have the fonts installed. check the repo's readme for more details.
@@ -689,7 +678,7 @@ user_pref("beacon.enabled", false);
 // https://web.archive.org/web/20210416195937/https://developer.mozilla.org/en-US/docs/Mozilla/Preferences/Preference_reference/dom.event.clipboardevents.enabled
 // https://github.com/pyllyukko/user.js/issues/287
 // NOTICE: Disabling clipboard events breaks Ctrl+C/X/V copy/cut/paste functionaility in JS-based web applications (Google Docs...)
-user_pref("dom.event.clipboardevents.enabled", false);
+user_pref("dom.event.clipboardevents.enabled", true);
 
 // PREF: Disable "copy to clipboard" functionality via Javascript (Firefox >= 41)
 // https://hg.mozilla.org/mozilla-central/rev/2f9f8ea4b9c3
@@ -819,7 +808,7 @@ user_pref("javascript.use_us_english_locale", true);
 
 // PREF: Do not submit invalid URIs entered in the address bar to the default search engine
 // http://kb.mozillazine.org/Keyword.enabled
-user_pref("keyword.enabled", false);
+//user_pref("keyword.enabled", false);
 
 // PREF: Don't trim HTTP off of URLs in the address bar.
 // https://bugzilla.mozilla.org/show_bug.cgi?id=665580
@@ -982,7 +971,7 @@ user_pref("plugin.state.libgnome-shell-browser-plugin", 0);
 
 // PREF: Disable the bundled OpenH264 video codec (disabled)
 // http://forums.mozillazine.org/viewtopic.php?p=13845077&sid=28af2622e8bd8497b9113851676846b1#p13845077
-//user_pref("media.gmp-provider.enabled",		false);
+//user_pref("media.gmp-provider.enabled", false);
 
 // PREF: Enable plugins click-to-play
 // https://wiki.mozilla.org/Firefox/Click_To_Play
@@ -1028,7 +1017,7 @@ user_pref("browser.newtabpage.activity-stream.asrouter.userprefs.cfr", false);
 
 // PREF: Trusted Recursive Resolver (DNS-over-HTTPS) (disabled)
 // https://wiki.mozilla.org/Trusted_Recursive_Resolver
-//user_pref("network.trr.mode",					0);
+//user_pref("network.trr.mode",	0);
 
 // PREF: Disable WebIDE
 // https://trac.torproject.org/projects/tor/ticket/16222
@@ -1036,13 +1025,6 @@ user_pref("browser.newtabpage.activity-stream.asrouter.userprefs.cfr", false);
 user_pref("devtools.webide.enabled", false);
 user_pref("devtools.webide.autoinstallADBHelper", false);
 user_pref("devtools.webide.autoinstallFxdtAdapters", false);
-
-// PREF: Disable remote debugging
-// https://developer.mozilla.org/en-US/docs/Tools/Remote_Debugging/Debugging_Firefox_Desktop
-// https://developer.mozilla.org/en-US/docs/Tools/Tools_Toolbox#Advanced_settings
-user_pref("devtools.debugger.remote-enabled", false);
-user_pref("devtools.chrome.enabled", false);
-user_pref("devtools.debugger.force-local", true);
 
 // PREF: Disable Mozilla telemetry/experiments
 // https://wiki.mozilla.org/Platform/Features/Telemetry
@@ -1058,9 +1040,9 @@ user_pref("devtools.debugger.force-local", true);
 user_pref("toolkit.telemetry.enabled", false);
 user_pref("toolkit.telemetry.unified", false);
 user_pref("toolkit.telemetry.archive.enabled", false);
-user_pref("experiments.supported", false);
-user_pref("experiments.enabled", false);
-user_pref("experiments.manifest.uri", "");
+user_pref("experiments.supported", true);
+user_pref("experiments.enabled", true);
+//user_pref("experiments.manifest.uri", "");
 
 // PREF: Disallow Necko to do A/B testing
 // https://trac.torproject.org/projects/tor/ticket/13170
@@ -1232,11 +1214,6 @@ user_pref("browser.newtabpage.activity-stream.showWeather", false);
 // https://developer.mozilla.org/en-US/docs/Web/HTTP/Link_prefetching_FAQ#Is_there_a_preference_to_disable_link_prefetching.3F
 user_pref("network.prefetch-next", false);
 
-// PREF: Disable DNS prefetching
-// http://kb.mozillazine.org/Network.dns.disablePrefetch
-// https://developer.mozilla.org/en-US/docs/Web/HTTP/Controlling_DNS_prefetching
-user_pref("network.dns.disablePrefetch", true);
-user_pref("network.dns.disablePrefetchFromHTTPS", true);
 
 // PREF: Disable the predictive service (Necko)
 // https://wiki.mozilla.org/Privacy/Reviews/Necko
@@ -1323,7 +1300,7 @@ user_pref("security.sri.enable", true);
 // https://dnt-dashboard.mozilla.org
 // https://github.com/pyllyukko/user.js/issues/11
 // NOTICE: Do No Track must be enabled manually
-//user_pref("privacy.donottrackheader.enabled",		true);
+user_pref("privacy.donottrackheader.enabled",	true);
 
 // PREF: Send a referer header with the target URI as the source (disabled)
 // https://bugzilla.mozilla.org/show_bug.cgi?id=822869
@@ -1389,7 +1366,7 @@ user_pref("network.cookie.thirdparty.sessionOnly", true);
 // NOTICE: Private browsing breaks Kerberos authentication
 // NOTICE: Disables "Containers" functionality (see below)
 // NOTICE: "Always use private browsing mode" (browser.privatebrowsing.autostart) disables the possibility to use password manager: https://support.mozilla.org/en-US/kb/usernames-and-passwords-are-not-saved#w_private-browsing
-user_pref("browser.privatebrowsing.autostart", true);
+//user_pref("browser.privatebrowsing.autostart", true);
 
 // PREF: Do not download URLs for the offline cache
 // http://kb.mozillazine.org/Browser.cache.offline.enable
@@ -1406,7 +1383,7 @@ user_pref("browser.cache.disk.enable", false);
 
 // PREF: Disable memory cache (disabled)
 // http://kb.mozillazine.org/Browser.cache.memory.enable
-//user_pref("browser.cache.memory.enable",		false);
+//user_pref("browser.cache.memory.enable", false);
 
 // PREF: Disable Caching of SSL Pages
 // CIS Version 1.2.0 October 21st, 2011 2.5.8
@@ -1415,11 +1392,11 @@ user_pref("browser.cache.disk_cache_ssl", false);
 
 // PREF: Cookies expires at the end of the session (when the browser closes)
 // http://kb.mozillazine.org/Network.cookie.lifetimePolicy#2
-user_pref("network.cookie.lifetimePolicy", 2);
+//user_pref("network.cookie.lifetimePolicy", 2);
 
 // PREF: When username/password autofill is enabled, still disable it on non-HTTPS sites
 // https://hg.mozilla.org/integration/mozilla-inbound/rev/f0d146fe7317
-user_pref("signon.autofillForms.http", false);
+//user_pref("signon.autofillForms.http", false);
 
 // PREF: Clear SSL Form Session Data
 // http://kb.mozillazine.org/Browser.sessionstore.privacy_level#2

@@ -16,12 +16,8 @@
       // if true, show the effect on bookmarks on the toolbar
       includeBookmarks: true,
 
-      // if true, show the effect on the urlbar
-      includeUrlBar: true,
-
-      // the color of the gradient. default is the browser's color on navbar button hover, or a faint baby blue if it's not available. 
-      // you may prefer just white, e.g. hsla(0, 0%, 100%, 0.05)
-      lightColor: "var(--button-hover-bgcolor, hsla(224, 100%, 80%, 0.55))",
+      // the color of the gradient. default is sort of a faint baby blue. you may prefer just white, e.g. hsla(0, 0%, 100%, 0.05)
+      lightColor: "hsla(224, 100%, 80%, 0.55)",
 
       // how wide the radial gradient is.
       gradientSize: 50,
@@ -51,23 +47,13 @@
 
     // get all the toolbar buttons in the navbar, in iterable form
     get toolbarButtons() {
-      if (!this._toolbarButtons || !this._options.cacheButtons) {
-        this._toolbarButtons = Array.from(
-          gNavToolbox.querySelectorAll(".toolbarbutton-1")
+      let buttons = Array.from(
+        gNavToolbox.querySelectorAll(".toolbarbutton-1")
+      );
+      if (this._options.includeBookmarks) {
+        buttons = buttons.concat(
+          Array.from(this.placesToolbarItems.querySelectorAll(".bookmark-item"))
         );
-        if (this._options.includeUrlBar) {
-          let urlbarBg = gNavToolbox.querySelector("#urlbar-background");
-          if (urlbarBg) this._toolbarButtons.push(urlbarBg);
-        }
-        if (this._options.includeBookmarks) {
-          this._toolbarButtons = this._toolbarButtons.concat(
-            Array.from(
-              this.personalToolbar.querySelectorAll(
-                ".toolbarbutton-1, .bookmark-item"
-              )
-            )
-          );
-        }
       }
       return this._toolbarButtons;
     }
@@ -91,24 +77,6 @@
      * @param {object} e (event)
      */
     handleEvent(e) {
-      // Store mouse position for later use
-      if (e.clientX !== undefined) this._lastMouseX = e.clientX;
-      if (e.clientY !== undefined) this._lastMouseY = e.clientY;
-      if (e.pageX !== undefined) this._lastPageX = e.pageX;
-      if (e.pageY !== undefined) this._lastPageY = e.pageY;
-
-      /// filter out mouse events which are too far from toolbar to cause any actual redraw
-      /// value is {gradientSize} + some additional padding to make sure effect fully clears out
-      if (
-        this._options.filterDy &&
-        e.clientY >
-          this.browser.getBoundingClientRect().y +
-            this._options.gradientSize
-      ) {
-        if (this._someEffectsApplied) this.clearEffectsForAll();
-        return;
-      }
-      
       requestAnimationFrame(time => {
         switch (e.type) {
           case "scroll":
@@ -191,21 +159,6 @@
         ? el
         : el.querySelector(".toolbarbutton-badge-stack") ||
           el.querySelector(".toolbarbutton-icon");
-      if (el.id == "urlbar-background") area = el;
-
-      // don't apply effect to focused url bar
-      if (this._options.includeUrlBar && el.id == 'urlbar-background' && gURLBar && gURLBar.focused) {
-        return this.clearEffect(area);
-      }
-
-      if (!area) {
-        area = el.querySelector(".toolbarbutton-text");
-      }
-
-      if (!area) {
-        return;
-      }
-
       let areaStyle = getComputedStyle(area);
       if (
         areaStyle.display == "none" ||
@@ -301,24 +254,6 @@
       if (!el) return;
       this._options.is_pressed = false;
       el.style.removeProperty("background-image");
-    }
-
-    /**
-    * invoked once when {filterDy} option enabled, and cursor leaves the interactive area
-    */
-    clearEffectsForAll() {
-      this.toolbarButtons.forEach(button => {
-        let isBookmark =
-          button.id === "PlacesChevron" || button.classList.contains("bookmark-item");
-        let area = isBookmark
-          ? button
-          : button.querySelector(".toolbarbutton-badge-stack") ||
-            button.querySelector(".toolbarbutton-icon") ||
-            button.querySelector(".toolbarbutton-text");
-        if (button.id == "urlbar-background") area = button;
-        if (area) this.clearEffect(area);
-      });
-      this._someEffectsApplied = false;
     }
   }
 

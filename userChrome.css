@@ -45,8 +45,10 @@
  }
 
  /* Add all around shadow-looks like an Outline *
+ /* Add all around shadow-looks like an Outline *
  .tabbrowser-tab[selected] .tab-icon-image {
      filter: drop-shadow(1px 0 0 #d1a141bb) drop-shadow(-1px 0 0 #d1a141bb) drop-shadow(0 1px 0 #d1a141bb) drop-shadow(0 -1px 0 #d1a141bb) !important;
+     /*   border-radius: 15% !important;*
      border-radius: 15% !important;
  }
 
@@ -1112,12 +1114,13 @@ See the above repository for updates as well as full license text. */
      padding-top: 1px !important;
      margin-left: -1px !important;
  }*/
- /* 1/16/2022 Tone down the Fx96 tab border with add-on themes in certain fallback situations */
+ /* 1/16/2022 Tone down the Fx96 tab border with add-on themes in certain fallback situations *
  .tab-background:is([selected], [multiselected]):-moz-lwtheme {
      background-image: radial-gradient(circle at bottom center,
              #6600ff 5px,
              #0e001b85) !important;
  }
+/**
 /**
  [brighttext="true"] .tab-background:is([selected], [multiselected]):-moz-lwtheme {
      --lwt-tabs-border-color: rgba(60, 37, 153, 0.914) !important;
@@ -1195,6 +1198,7 @@ See the above repository for updates as well as full license text. */
  }
 
  /* Adds an effect to the highlight that wasn't there in Photon */
+ /* Remove if unwanted *
  /* Remove if unwanted *
  .tabbrowser-tab:hover>.tab-stack>.tab-background[selected]::before {
      filter: brightness(125%) saturate(150%) !important;
